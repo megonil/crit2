@@ -1,18 +1,18 @@
 Checks: >
-    clang-analyzer-*,
-    modernize-*,
-    performance-*,
-    readability-*,
-    bugprone-*,
-    cppcoreguidelines-*,
-    cert-err58-cpp,
-    cert-dcl50-cpp,
-    hicpp-*,
-    -modernize-use-trailing-return-type,
-    -readability-magic-numbers,
-    -modernize-use-nodiscard,
-    -cppcoreguidelines-pro-bounds-pointer-arithmetic,
-    -cppcoreguidelines-macro-usage
+    clang-analyzer-*, modernize-*, performance-*, readability-*, bugprone-*,
+    cppcoreguidelines-*, cert-err58-cpp, cert-dcl50-cpp, hicpp-*,
+    -modernize-use-trailing-return-type, -readability-magic-numbers,
+    -modernize-use-nodiscard, -cppcoreguidelines-pro-bounds-pointer-arithmetic,
+    -cppcoreguidelines-macro-usage, -readability-identifier-length,
+    -bugprone-easily-swappable-parameters,
+    -cppcoreguidelines-pro-type-cstyle-cast, -hicpp-avoid-c-arrays,
+    -cppcoreguidelines-avoid-c-arrays, -modernize-avoid-c-arrays,
+    -cppcoreguidelines-pro-bounds-array-to-pointer-decay, -hicpp-no-array-decay,
+    -cppcoreguidelines-avoid-magic-numbers,
+    -cppcoreguidelines-pro-type-union-access, -cppcoreguidelines-owning-memory,
+    -performance-no-int-to-ptr, -cppcoreguidelines-missing-std-forward,
+    -cppcoreguidelines-avoid-non-const-global-variables,
+    -cppcoreguidelines-pro-type-vararg, -hicpp-vararg
 
 WarningsAsErrors: "*"
 
@@ -33,26 +33,30 @@ CheckOptions:
     # =========================
     # Readability
     # =========================
-    - key: readability-identifier-naming.VariableCase
-      value: lower_case
     - key: readability-identifier-naming.GlobalVariableCase
       value: lower_case
     - key: readability-identifier-naming.LocalVariableCase
       value: lower_case
-    - key: readability-identifier-naming.MemberCase
-      value: lower_case
+    - key: readability-identifier-naming.PublicMemberCase
+      value: CamelCase
     - key: readability-identifier-naming.ParameterCase
       value: lower_case
     - key: readability-identifier-naming.FunctionCase
-      value: lower_case
+      value: camelBack
     - key: readability-identifier-naming.PublicMethodCase
       value: CamelCase
     - key: readability-identifier-naming.ProtectedMethodCase
-      value: CamelCase
+      value: camelBack
+    - key: readability-identifier-naming.StaticMemberPrefix
+      value: '_'
+    - key: readability-identifier-naming.PrivateMemberPrefix
+      value: '_'
+    - key: readability-identifier-naming.PrivateMemberCase
+      value: camelBack
     - key: readability-identifier-naming.PrivateMethodCase
-      value: lower_case
+      value: camelBack
     - key: readability-identifier-naming.NamespaceCase
-      value: lower_case
+      value: camelBack
     - key: readability-identifier-naming.EnumConstantCase
       value: CamelCase
     - key: readability-identifier-naming.ConstantCase
@@ -75,6 +79,7 @@ CheckOptions:
       value: CamelCase
     - key: readability-identifier-naming.MacroDefinitionCase
       value: lower_case
+
     # =========================
     # Bugprone / Safety
     # =========================

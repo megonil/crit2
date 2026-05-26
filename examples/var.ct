@@ -1,0 +1,6 @@
+fn main() Int {
+	let a: Int = 0;
+	let b = 148; (* Type inferring *)
+
+	ret a; (* Use as expression *)
+}
