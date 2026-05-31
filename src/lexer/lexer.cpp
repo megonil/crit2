@@ -122,7 +122,10 @@ Lexer::readEscaped () {
     }
   }
 
-  return *c;
+  char ch = *c;
+  next ();
+
+  return ch;
 }
 
 Token
@@ -147,7 +150,6 @@ Lexer::tokenizeString () {
 
   while (!matches ('"')) {
     val += readEscaped ();
-    next ();
     if (matches ('\0')) {
       error ("Unfinished string");
     }

@@ -9,6 +9,7 @@ static std::string
 testpath (const std::string &file) {
   std::filesystem::path p = PROJ_SOURCE_DIR;
   p /= "test";
+  p /= "lexer";
   p /= file;
 
   return p.string ();
@@ -16,9 +17,10 @@ testpath (const std::string &file) {
 
 #define init_lexer(filepath)                                              \
   llvm::SourceMgr mgr;                                                    \
-  unsigned        buff_id = Src::FromFile (mgr, filepath);                \
+  unsigned        buff_id = Src::FromFile (mgr, testpath (filepath));     \
                                                                           \
-  Lexer lexer (mgr, buff_id);
+  Lexer  lexer (mgr, buff_id);                                            \
+  size_t littest_id = 0;
 
 #define deftokens(...)                                                    \
   using enum TokenType;                                                   \
@@ -64,18 +66,59 @@ checkAllFun (std::vector<Token> &vec, const TokenType *arr, size_t len) {
 static void
 printAll (std::vector<Token> &vec) {
   for (auto &t : vec) {
-    std::print (stderr, "{} ", tt2str (t.Type));
+    std::print (stderr, "{} ", t.ToString ());
   }
+
+  std::println (stderr, "");
 }
 
 #define print_all() printAll (vec);
 
-TEST_CASE ("basic lexing test", "{lexer}") {
-  std::cout << testpath ("test_lexer.ct");
-  init_lexer (testpath ("test_lexer.ct"));
+static void
+checkLiteral (std::vector<Token> &vec, size_t index, Literal expected) {
+  const Token &tok    = vec[index];
+  auto         actual = tok.Literal;
+
+  if (actual != expected) {
+    std::println (
+            stderr,
+            "Expected {}, Got {}.",
+            tok.LiteralString (),
+            Token::LiteralString (expected));
+  }
+
+  REQUIRE (actual == expected);
+}
+
+#define check_lit(v) checkLiteral (vec, littest_id++, v)
+
+static void
+ignore (void *v) {
+}
+
+#define ignore_lit() ignore (&littest_id);
+
+TEST_CASE ("basic lexing", "{lexer}") {
+  init_lexer ("basic.ct");
+  ignore_lit ();
   deftokens (Fn);
 
   tokenize_all ();
   print_all ();
   check_all ();
+}
+
+TEST_CASE ("literals lexing", "{lexer}") {
+  init_lexer ("literals.ct");
+  deftokens (Literal, Literal, Literal);
+
+  tokenize_all ();
+  print_all ();
+  check_all ();
+
+  check_lit (123);
+  check_lit (123.56);
+  // check_lit (2, 'a');
+  // check_lit (3, '\n');
+  // check_lit (4, "Hello, World!\n");
 }

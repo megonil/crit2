@@ -22,6 +22,9 @@ tt2str (TokenType tt) {
     // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
     return ttstr[(unsigned) tt - (unsigned) TokenType::KeywordsStart - 1];
   }
+  if (tt == TokenType::Eof) {
+    return "EOF";
+  }
 
   return "Unknown";
 }
